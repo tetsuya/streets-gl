@@ -8,8 +8,18 @@ const {EsbuildPlugin} = require('esbuild-loader');
 
 const childProcess = require('child_process');
 const {DefinePlugin} = require("webpack");
-const COMMIT_SHA = process.env.SOURCE_COMMIT || process.env.GITHUB_SHA || childProcess.execSync('git rev-parse HEAD').toString().trim();
-const COMMIT_BRANCH = process.env.COOLIFY_BRANCH || process.env.GITHUB_REF_NAME || childProcess.execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
+
+// Buildpack builds unpack a source tarball, so there is no .git directory: git must not be fatal.
+const git = command => {
+	try {
+		return childProcess.execSync(command, {stdio: ['ignore', 'pipe', 'ignore']}).toString().trim();
+	} catch {
+		return 'unknown';
+	}
+};
+
+const COMMIT_SHA = process.env.SOURCE_VERSION || process.env.GITHUB_SHA || git('git rev-parse HEAD');
+const COMMIT_BRANCH = process.env.GITHUB_REF_NAME || git('git rev-parse --abbrev-ref HEAD');
 const VERSION = require('./package.json').version;
 
 module.exports = (env, argv) => ([{
