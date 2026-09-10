@@ -1,0 +1,36 @@
+{
+  "name": "tty-streets-gl",
+  "description": "",
+  "keywords": [
+    "build",
+    "build.io"
+  ],
+  "website": "https://small-sharp-tool.com/",
+  "repository": "git@github.com:tetsuya/streets-gl.git",
+  "logo": "",
+  "success_url": "/",
+  "stack": "heroku-24",
+  "scripts": {
+    "postdeploy": ""
+  },
+  "formation": {
+    "web": {
+      "size": "Standard-1X",
+      "display": "npm start",
+      "quantity": 1
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "environments": {
+    "test": {
+      "scripts": {
+        "test": "echo 'Testing...'",
+        "test-setup": "echo 'Setting up test environment...'"
+      }
+    }
+  }
+}
